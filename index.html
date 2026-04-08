@@ -482,6 +482,8 @@
       font-weight: 700;
       font-family: 'DM Serif Display', serif;
     }
+    
+    /* ========== CONTACT SECTION FIXED ========== */
     .contact-form {
       max-width: 700px;
       margin: 0 auto;
@@ -499,6 +501,7 @@
       font-weight: 600;
       margin-bottom: 0.5rem;
       display: block;
+      color: var(--text-primary);
     }
     input, textarea {
       width: 100%;
@@ -507,7 +510,9 @@
       border-radius: 0.5rem;
       background: var(--bg-primary);
       color: var(--text-primary);
+      font-family: inherit;
       transition: all 0.3s;
+      font-size: 1rem;
     }
     input:focus, textarea:focus {
       outline: none;
@@ -515,6 +520,31 @@
       box-shadow: 0 0 0 3px rgba(15,118,110,0.2);
       transform: scale(1.01);
     }
+    .error-msg {
+      color: #e11d48;
+      font-size: 0.8rem;
+      margin-top: 0.25rem;
+      display: none;
+    }
+    .form-status {
+      margin-top: 1rem;
+      text-align: center;
+      display: none;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+    }
+    .form-status.success {
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+      display: block;
+    }
+    .form-status.error {
+      background: rgba(225, 29, 72, 0.1);
+      color: #e11d48;
+      display: block;
+    }
+    
     footer {
       background: var(--bg-secondary);
       border-top: 1px solid var(--border);
@@ -537,6 +567,7 @@
       color: white;
       transform: translateY(-2px);
     }
+    
     @media (max-width: 1024px) {
       .hero-left-card, .hero-stats-card {
         display: none;
@@ -550,6 +581,9 @@
       .section-title { font-size: 2rem; }
       .stats-section { width: 95%; }
       .blob { width: 200px; height: 200px; top: 40%; }
+      .contact-form { padding: 1.5rem; margin: 0 1rem; }
+      .form-group { margin-bottom: 1rem; }
+      input, textarea { padding: 0.7rem; }
     }
   </style>
 </head>
@@ -578,7 +612,7 @@
   </nav>
 
   <main>
-    <!-- Hero Section (no scroll indicator) -->
+    <!-- Hero Section -->
     <section id="home" class="hero">
       <div class="blob"></div>
       
@@ -706,18 +740,30 @@
       </div>
     </section>
 
-    <!-- Contact Form -->
+    <!-- Contact Form - FIXED -->
     <section id="contact">
       <div class="container">
         <h2 class="section-title fade-up">Let's Connect</h2>
         <p class="section-subtitle fade-up" style="transition-delay: 0.1s;">Ready to elevate your business? Drop us a message.</p>
         <div class="contact-form zoom-in">
           <form id="contactForm">
-            <div class="form-group"><label>Full name *</label><input type="text" id="name" placeholder="John Carter"><div class="error-msg" id="nameError">Name is required</div></div>
-            <div class="form-group"><label>Email address *</label><input type="email" id="email" placeholder="hello@company.com"><div class="error-msg" id="emailError">Valid email required</div></div>
-            <div class="form-group"><label>Message *</label><textarea rows="4" id="message" placeholder="Tell us about your project..."></textarea><div class="error-msg" id="messageError">Message cannot be empty</div></div>
+            <div class="form-group">
+              <label>Full name *</label>
+              <input type="text" id="name" placeholder="John Carter">
+              <div class="error-msg" id="nameError">Please enter your name</div>
+            </div>
+            <div class="form-group">
+              <label>Email address *</label>
+              <input type="email" id="email" placeholder="hello@company.com">
+              <div class="error-msg" id="emailError">Please enter a valid email address</div>
+            </div>
+            <div class="form-group">
+              <label>Message *</label>
+              <textarea rows="4" id="message" placeholder="Tell us about your project..."></textarea>
+              <div class="error-msg" id="messageError">Please enter your message</div>
+            </div>
             <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">Send Message <i class="fas fa-paper-plane"></i></button>
-            <div id="formStatus" style="margin-top:1rem; text-align:center; display:none;"></div>
+            <div id="formStatus" class="form-status"></div>
           </form>
         </div>
       </div>
@@ -762,7 +808,7 @@
       link.addEventListener('click', () => mobileNav.style.display = 'none');
     });
 
-    // REPLAYABLE SCROLL ANIMATIONS (adds/removes 'visible' class on intersection)
+    // REPLAYABLE SCROLL ANIMATIONS
     const animatedElements = document.querySelectorAll('.fade-up, .fade-left, .fade-right, .zoom-in');
     const animationObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -775,7 +821,7 @@
     }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
     animatedElements.forEach(el => animationObserver.observe(el));
 
-    // Stats counter (runs only once when first visible)
+    // Stats counter (once)
     const counters = document.querySelectorAll('.stat-number');
     const statsObserver = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
@@ -804,7 +850,7 @@
     }, { threshold: 0.5 });
     counters.forEach(c => statsObserver.observe(c));
 
-    // Contact form validation
+    // Contact form validation (FIXED)
     const form = document.getElementById('contactForm');
     form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -812,21 +858,40 @@
       const email = document.getElementById('email').value.trim();
       const message = document.getElementById('message').value.trim();
       let valid = true;
+      
+      // Reset error messages
       document.getElementById('nameError').style.display = 'none';
       document.getElementById('emailError').style.display = 'none';
       document.getElementById('messageError').style.display = 'none';
-      if (!name) { document.getElementById('nameError').style.display = 'block'; valid = false; }
-      if (!email || !/^\S+@\S+\.\S+$/.test(email)) { document.getElementById('emailError').style.display = 'block'; valid = false; }
-      if (!message) { document.getElementById('messageError').style.display = 'block'; valid = false; }
+      
+      if (!name) {
+        document.getElementById('nameError').style.display = 'block';
+        valid = false;
+      }
+      if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+        document.getElementById('emailError').style.display = 'block';
+        valid = false;
+      }
+      if (!message) {
+        document.getElementById('messageError').style.display = 'block';
+        valid = false;
+      }
+      
       const statusDiv = document.getElementById('formStatus');
       if (valid) {
+        statusDiv.className = 'form-status';
         statusDiv.style.display = 'block';
-        statusDiv.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Sending...';
+        statusDiv.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Sending message...';
+        
+        // Simulate API call
         setTimeout(() => {
-          statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! We\'ll be in touch soon.';
+          statusDiv.className = 'form-status success';
+          statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! We\'ll be in touch within 24 hours.';
           form.reset();
-          setTimeout(() => statusDiv.style.display = 'none', 4000);
-        }, 1200);
+          setTimeout(() => {
+            statusDiv.style.display = 'none';
+          }, 5000);
+        }, 1500);
       } else {
         statusDiv.style.display = 'none';
       }
