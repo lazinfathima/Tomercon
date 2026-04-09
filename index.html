@@ -66,7 +66,7 @@
     }
 
     section {
-      padding: 5rem 0;
+      padding: 3rem 0;
     }
     .hero {
       min-height: 85vh;
@@ -76,11 +76,13 @@
       overflow: hidden;
     }
 
-    /* ========== ANIMATION CLASSES (replayable) ========== */
+    /* ========== REPLAYABLE SCROLL ANIMATIONS ========== */
+    .fade-up, .fade-left, .fade-right, .zoom-in, .fade-in-hero {
+      transition: opacity 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
     .fade-up {
       opacity: 0;
       transform: translateY(40px);
-      transition: opacity 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
     }
     .fade-up.visible {
       opacity: 1;
@@ -89,7 +91,6 @@
     .fade-left {
       opacity: 0;
       transform: translateX(-40px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
     }
     .fade-left.visible {
       opacity: 1;
@@ -98,7 +99,6 @@
     .fade-right {
       opacity: 0;
       transform: translateX(40px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
     }
     .fade-right.visible {
       opacity: 1;
@@ -107,11 +107,26 @@
     .zoom-in {
       opacity: 0;
       transform: scale(0.95);
-      transition: opacity 0.6s ease, transform 0.6s ease;
     }
     .zoom-in.visible {
       opacity: 1;
       transform: scale(1);
+    }
+    .fade-in-hero {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    .fade-in-hero.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .fade-in-hero-right {
+      opacity: 0;
+      transform: translateX(40px);
+    }
+    .fade-in-hero-right.visible {
+      opacity: 1;
+      transform: translateX(0);
     }
 
     .btn-primary {
@@ -157,7 +172,7 @@
       font-weight: 700;
       font-family: 'DM Serif Display', serif;
       text-align: center;
-      margin-bottom: 1rem;
+      margin-bottom: 4rem;
       position: relative;
       display: inline-block;
       width: 100%;
@@ -272,7 +287,7 @@
       backdrop-filter: blur(12px);
     }
 
-    /* Hero with left and right cards (no scroll indicator) */
+    /* Hero - Two Column Layout */
     .hero {
       background: var(--gradient-hero);
     }
@@ -293,132 +308,102 @@
       100% { border-radius: 62% 38% 72% 28% / 48% 32% 68% 52%; transform: translate(0, 0) scale(1); }
     }
 
-    /* LEFT CARD */
-    .hero-left-card {
-      position: absolute;
-      left: 5%;
-      top: 50%;
-      transform: translateY(-50%);
-      background: var(--glass-bg);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border);
-      border-radius: 1.5rem;
-      padding: 1.2rem 1.5rem;
-      width: 220px;
-      text-align: center;
-      box-shadow: var(--shadow-lg);
-      z-index: 2;
-      animation: floatCardLeft 3s ease-in-out infinite;
-    }
-    @keyframes floatCardLeft {
-      0% { transform: translateY(-50%) translateX(0); }
-      50% { transform: translateY(-52%) translateX(5px); }
-      100% { transform: translateY(-50%) translateX(0); }
-    }
-    .hero-left-card i {
-      font-size: 2rem;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-    }
-    .hero-left-card h4 {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-    }
-    .hero-left-card p {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-    }
-
-    /* RIGHT CARD */
-    .hero-stats-card {
-      position: absolute;
-      right: 5%;
-      top: 50%;
-      transform: translateY(-50%);
-      background: var(--glass-bg);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border);
-      border-radius: 1.5rem;
-      padding: 1.5rem;
-      width: 220px;
-      text-align: center;
-      box-shadow: var(--shadow-lg);
-      z-index: 2;
-      animation: floatCardRight 3s ease-in-out infinite;
-    }
-    @keyframes floatCardRight {
-      0% { transform: translateY(-50%) translateX(0); }
-      50% { transform: translateY(-52%) translateX(-5px); }
-      100% { transform: translateY(-50%) translateX(0); }
-    }
-    .hero-stats-card i {
-      font-size: 2rem;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-    }
-    .hero-stats-card h4 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-    .hero-stats-card p {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-    }
-    .hero-stats-card .stat-number-sm {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--primary);
-    }
-
-    .hero-content {
-      text-align: center;
-      max-width: 700px;
-      margin: 0 auto;
+    .hero-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
       position: relative;
       z-index: 1;
+      flex-wrap: wrap;
     }
-    .hero h1 {
+    .hero-left {
+      flex: 1.2;
+      text-align: left;
+    }
+    .hero-left h1 {
       font-size: 3.5rem;
       font-weight: 700;
       font-family: 'DM Serif Display', serif;
       margin-bottom: 1.5rem;
       line-height: 1.2;
-      animation: fadeInDown 0.8s ease-out;
     }
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .hero h1 span {
+    .hero-left h1 span {
       background: var(--gradient-primary);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
     }
-    .hero p {
-      font-size: 1.25rem;
+    .hero-left p {
+      font-size: 1.2rem;
       color: var(--text-secondary);
       margin-bottom: 2rem;
-      animation: fadeInUp 0.8s ease-out 0.2s both;
     }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+    .hero-right {
+      flex: 0.9;
+      text-align: center;
     }
-    .hero .btn-primary {
-      animation: fadeInUp 0.8s ease-out 0.4s both;
+    .hero-right img {
+      max-width: 100%;
+      border-radius: 1.5rem;
+      box-shadow: var(--shadow-lg);
+      transition: transform 0.3s;
+    }
+    .hero-right img:hover {
+      transform: scale(1.02);
     }
 
-    /* Cards & other sections */
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero-container {
+        flex-direction: column;
+        text-align: center;
+      }
+      .hero-left {
+        text-align: center;
+      }
+      .hero-left h1 {
+        font-size: 2.8rem;
+      }
+      .hero-right {
+        max-width: 500px;
+        margin: 0 auto;
+      }
+    }
+    @media (max-width: 768px) {
+      .hero-left h1 {
+        font-size: 2.2rem;
+      }
+      .hero-left p {
+        font-size: 1rem;
+      }
+    }
+
+    /* Other sections */
     .services-grid, .portfolio-grid, .testimonials-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 2rem;
       margin-top: 2rem;
     }
-    .service-card, .portfolio-card, .testimonial-card {
+    
+    /* === FIX: Service cards text centered (exactly as requested) === */
+    .service-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(4px);
+      border-radius: 1rem;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      text-align: center;          /* centers all text and inline elements */
+    }
+    .service-card .service-icon {
+      display: inline-block;        /* ensures icon respects text-align */
+      margin-bottom: 1rem;
+    }
+    /* Keep other cards unchanged */
+    .portfolio-card, .testimonial-card {
       background: var(--bg-card);
       backdrop-filter: blur(4px);
       border-radius: 1rem;
@@ -427,6 +412,7 @@
       box-shadow: var(--shadow-sm);
       transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
     }
+    
     .service-card:hover, .portfolio-card:hover {
       transform: translateY(-8px) scale(1.02);
       box-shadow: var(--shadow-lg);
@@ -444,22 +430,26 @@
     .service-card:hover .service-icon {
       transform: scale(1.1);
     }
+    
+    /* === STATS SECTION (no fixed height, better card look) === */
     .stats-section {
       background: var(--gradient-primary);
       color: white;
-      padding: 4rem 1rem;
+      padding: 4rem 1.5rem;
       text-align: center;
-      border-radius: 1.5rem;
+      border-radius: 2rem;           /* more pronounced card shape */
       margin: 2rem auto;
       width: 90%;
       max-width: 1200px;
       position: relative;
       overflow: hidden;
+      box-shadow: var(--shadow-lg);  /* card-like shadow */
+      border: 1px solid rgba(255,255,255,0.1);
     }
     .stats-section::after {
       content: '';
       position: absolute;
-      bottom: -20px;
+      bottom: -10px;
       right: -20px;
       width: 150px;
       height: 150px;
@@ -477,16 +467,24 @@
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 2rem;
     }
+    .stats-grid > div {
+      text-align: center;           /* ensures inner text centered */
+    }
     .stat-number {
       font-size: 3rem;
       font-weight: 700;
       font-family: 'DM Serif Display', serif;
+      line-height: 1.2;
     }
-    
-    /* ========== CONTACT SECTION FIXED ========== */
+
+    /* Contact Section - Two Column Layout (Form Left, Info Right) */
+    .contact-wrapper {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
     .contact-form {
-      max-width: 700px;
-      margin: 0 auto;
+      flex: 1;
       background: var(--bg-card);
       backdrop-filter: blur(4px);
       padding: 2.5rem;
@@ -494,6 +492,75 @@
       border: 1px solid var(--border);
       box-shadow: var(--shadow-md);
     }
+    .contact-info {
+      flex: 1;
+      background: var(--bg-card);
+      backdrop-filter: blur(4px);
+      padding: 2.5rem;
+      border-radius: 1rem;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .info-item i {
+      font-size: 1.5rem;
+      color: var(--accent);
+      margin-top: 0.2rem;
+    }
+    .info-item h4 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .info-item p, .info-item a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .info-item a:hover {
+      color: var(--accent);
+    }
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    .social-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: var(--bg-secondary);
+      border-radius: 50%;
+      color: var(--text-primary);
+      transition: all 0.2s;
+    }
+    .social-links a:hover {
+      background: var(--accent);
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    @media (max-width: 768px) {
+      .contact-wrapper {
+        flex-direction: column;
+      }
+      .contact-info {
+        order: 2;
+      }
+      .contact-form {
+        order: 1;
+      }
+    }
+
     .form-group {
       margin-bottom: 1.5rem;
     }
@@ -539,12 +606,7 @@
       color: #10b981;
       display: block;
     }
-    .form-status.error {
-      background: rgba(225, 29, 72, 0.1);
-      color: #e11d48;
-      display: block;
-    }
-    
+
     footer {
       background: var(--bg-secondary);
       border-top: 1px solid var(--border);
@@ -567,21 +629,13 @@
       color: white;
       transform: translateY(-2px);
     }
-    
-    @media (max-width: 1024px) {
-      .hero-left-card, .hero-stats-card {
-        display: none;
-      }
-    }
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .mobile-menu-btn { display: block; }
-      .hero h1 { font-size: 2.2rem; }
       section { padding: 3rem 0; }
       .section-title { font-size: 2rem; }
-      .stats-section { width: 95%; }
-      .blob { width: 200px; height: 200px; top: 40%; }
-      .contact-form { padding: 1.5rem; margin: 0 1rem; }
+      .stats-section { width: 95%; padding: 3rem 1rem; }
+      .contact-form, .contact-info { padding: 1.5rem; margin: 0 1rem; }
       .form-group { margin-bottom: 1rem; }
       input, textarea { padding: 0.7rem; }
     }
@@ -612,43 +666,23 @@
   </nav>
 
   <main>
-    <!-- Hero Section -->
+    <!-- Hero Section - Two Column with replayable animations -->
     <section id="home" class="hero">
       <div class="blob"></div>
-      
-      <!-- LEFT CARD -->
-      <div class="hero-left-card">
-        <i class="fas fa-building"></i>
-        <h4>Trusted by 500+ Enterprises</h4>
-        <p>Global companies rely on us</p>
-        <div style="margin-top: 0.5rem; display: flex; justify-content: center; gap: 0.3rem;">
-          <i class="fas fa-check-circle" style="font-size: 0.7rem;"></i>
-          <i class="fas fa-check-circle" style="font-size: 0.7rem;"></i>
-          <i class="fas fa-check-circle" style="font-size: 0.7rem;"></i>
+      <div class="container hero-container">
+        <div class="hero-left">
+          <h1 class="fade-in-hero">Innovating Business <br> <span>Through Technology</span></h1>
+          <p class="fade-in-hero" style="transition-delay: 0.1s;">We deliver AI-powered IT solutions and business consulting that drive real growth. Future-ready, scalable, and secure.</p>
+          <a href="#contact" class="btn-primary fade-in-hero" style="transition-delay: 0.2s;">Get Started <i class="fas fa-arrow-right"></i></a>
         </div>
-      </div>
-
-      <!-- RIGHT CARD -->
-      <div class="hero-stats-card">
-        <i class="fas fa-chart-line"></i>
-        <div class="stat-number-sm">98%</div>
-        <h4>Client Retention</h4>
-        <p>Industry leading satisfaction</p>
-        <hr style="margin: 0.8rem 0; border-color: var(--border);">
-        <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
-          <div><i class="fas fa-clock"></i> <span>24/7</span></div>
-          <div><i class="fas fa-globe"></i> <span>Global</span></div>
+        <div class="hero-right">
+          <!-- REPLACE WITH YOUR LOCAL IMAGE PATH -->
+          <img src="img2.jpg" alt="IT Solutions" class="fade-in-hero-right">
         </div>
-      </div>
-
-      <div class="container hero-content">
-        <h1>Innovating Business <br> <span>Through Technology</span></h1>
-        <p>We deliver AI-powered IT solutions and business consulting that drive real growth. Future-ready, scalable, and secure.</p>
-        <a href="#contact" class="btn-primary">Get Started <i class="fas fa-arrow-right"></i></a>
       </div>
     </section>
 
-    <!-- Services Preview -->
+    <!-- Services Preview (cards text centered) -->
     <section>
       <div class="container">
         <h2 class="section-title fade-up">What We Deliver</h2>
@@ -661,7 +695,7 @@
       </div>
     </section>
 
-    <!-- Stats Section -->
+    <!-- Stats Section (now with proper padding, card-like style, no fixed height) -->
     <div class="stats-section zoom-in">
       <div class="stats-grid">
         <div><div class="stat-number" data-target="00">0</div><div>Happy Clients</div></div>
@@ -671,7 +705,7 @@
       </div>
     </div>
 
-    <!-- About Section -->
+    <!-- About Section with local image -->
     <section id="about">
       <div class="container">
         <h2 class="section-title fade-up">About Tomercon Group</h2>
@@ -686,8 +720,8 @@
             </div>
           </div>
           <div class="fade-right" style="flex: 0.9; position: relative;">
-            <img src="https://placehold.co/500x400/0f3b5c/white?text=Tomercon+Office" alt="About" style="width: 100%; border-radius: 1rem; box-shadow: var(--shadow-lg); transition: transform 0.3s;">
-            <img src="https://placehold.co/80x80/0f766e/white?text=AI" style="position: absolute; bottom: -15px; left: -15px; width: 70px; border-radius: 50%; border: 3px solid var(--bg-primary); box-shadow: var(--shadow-md); animation: pulse-glow 2s infinite;">
+            <!-- REPLACE WITH YOUR LOCAL OFFICE IMAGE PATH -->
+            <img src="img1.png" alt="Tomercon Office" style="width: 100%; border-radius: 1rem; box-shadow: var(--shadow-lg); transition: transform 0.3s;">
           </div>
         </div>
       </div>
@@ -721,9 +755,9 @@
         <h2 class="section-title fade-up">Recent Projects</h2>
         <p class="section-subtitle fade-up" style="transition-delay: 0.1s;">Innovative solutions that made an impact.</p>
         <div class="portfolio-grid">
-          <div class="portfolio-card fade-up" style="transition-delay: 0.2s;"><img src="https://placehold.co/600x300/0f3b5c/white?text=Fintech+Dashboard" style="width:100%; border-radius:0.75rem; margin-bottom:1rem;"><h3>Fintech Analytics Hub</h3><p>Real-time fraud detection & reporting.</p><div><span class="tech-tag">React</span><span class="tech-tag">D3.js</span><span class="tech-tag">Node</span></div></div>
-          <div class="portfolio-card fade-up" style="transition-delay: 0.3s;"><img src="https://placehold.co/600x300/0f766e/white?text=AI+Chatbot" style="width:100%; border-radius:0.75rem; margin-bottom:1rem;"><h3>AI Customer Support</h3><p>LLM-powered chatbot for e-commerce.</p><div><span class="tech-tag">Python</span><span class="tech-tag">LangChain</span><span class="tech-tag">FastAPI</span></div></div>
-          <div class="portfolio-card fade-up" style="transition-delay: 0.4s;"><img src="https://placehold.co/600x300/0f3b5c/white?text=Cloud+Migration" style="width:100%; border-radius:0.75rem; margin-bottom:1rem;"><h3>Cloud Native Transformation</h3><p>Migrated legacy to AWS EKS.</p><div><span class="tech-tag">AWS</span><span class="tech-tag">Terraform</span><span class="tech-tag">K8s</span></div></div>
+          <div class="portfolio-card fade-up" style="transition-delay: 0.2s;"><img src="img3.jpg" style="width:100%; border-radius:0.75rem; margin-bottom:1rem;"><h3>Fintech Analytics Hub</h3><p>Real-time fraud detection & reporting.</p><div><span class="tech-tag">React</span><span class="tech-tag">D3.js</span><span class="tech-tag">Node</span></div></div>
+          <div class="portfolio-card fade-up" style="transition-delay: 0.3s;"><img src="img4.jpg" style="width:100%; border-radius:0.75rem; margin-bottom:1rem;"><h3>AI Customer Support</h3><p>LLM-powered chatbot for e-commerce.</p><div><span class="tech-tag">Python</span><span class="tech-tag">LangChain</span><span class="tech-tag">FastAPI</span></div></div>
+          <div class="portfolio-card fade-up" style="transition-delay: 0.4s;"><img src="img5.png" style="width:100%; border-radius:0.75rem; margin-bottom:1rem;"><h3>Cloud Native Transformation</h3><p>Migrated legacy to AWS EKS.</p><div><span class="tech-tag">AWS</span><span class="tech-tag">Terraform</span><span class="tech-tag">K8s</span></div></div>
         </div>
       </div>
     </section>
@@ -740,31 +774,79 @@
       </div>
     </section>
 
-    <!-- Contact Form - FIXED -->
+    <!-- Contact Section - Two Column: Form (Left) + Info (Right) -->
     <section id="contact">
       <div class="container">
         <h2 class="section-title fade-up">Let's Connect</h2>
         <p class="section-subtitle fade-up" style="transition-delay: 0.1s;">Ready to elevate your business? Drop us a message.</p>
-        <div class="contact-form zoom-in">
-          <form id="contactForm">
-            <div class="form-group">
-              <label>Full name *</label>
-              <input type="text" id="name" placeholder="John Carter">
-              <div class="error-msg" id="nameError">Please enter your name</div>
+        <div class="contact-wrapper zoom-in">
+          <!-- Left Side: Contact Form -->
+          <div class="contact-form">
+            <form id="contactForm">
+              <div class="form-group">
+                <label>Full name *</label>
+                <input type="text" id="name" placeholder="John Carter">
+                <div class="error-msg" id="nameError">Please enter your name</div>
+              </div>
+              <div class="form-group">
+                <label>Email address *</label>
+                <input type="email" id="email" placeholder="hello@company.com">
+                <div class="error-msg" id="emailError">Please enter a valid email address</div>
+              </div>
+              <div class="form-group">
+                <label>Message *</label>
+                <textarea rows="4" id="message" placeholder="Tell us about your project..."></textarea>
+                <div class="error-msg" id="messageError">Please enter your message</div>
+              </div>
+              <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">Send Message <i class="fas fa-paper-plane"></i></button>
+              <div id="formStatus" class="form-status"></div>
+            </form>
+          </div>
+
+          <!-- Right Side: Contact Information -->
+          <div class="contact-info">
+            <div class="info-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <div>
+                <h4>Visit Us</h4>
+                <p>Tomercon Developers,20/1104,<br>Thalancheri Paramba, Panniyankara, Kallai,<br> Kozhikode, Kerala - 673003, India</p>
+              </div>
             </div>
-            <div class="form-group">
-              <label>Email address *</label>
-              <input type="email" id="email" placeholder="hello@company.com">
-              <div class="error-msg" id="emailError">Please enter a valid email address</div>
+            <div class="info-item">
+              <i class="fas fa-envelope"></i>
+              <div>
+                <h4>Email Us</h4>
+                <a href="mailto:hello@tomercon.com">hello@tomercon.com</a><br>
+                <a href="mailto:support@tomercon.com">support@tomercon.com</a>
+              </div>
             </div>
-            <div class="form-group">
-              <label>Message *</label>
-              <textarea rows="4" id="message" placeholder="Tell us about your project..."></textarea>
-              <div class="error-msg" id="messageError">Please enter your message</div>
+            <div class="info-item">
+              <i class="fas fa-phone-alt"></i>
+              <div>
+                <h4>Call Us</h4>
+                <p>+91 1234567890<br>+91 1234567890</p>
+              </div>
             </div>
-            <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">Send Message <i class="fas fa-paper-plane"></i></button>
-            <div id="formStatus" class="form-status"></div>
-          </form>
+            <div class="info-item">
+              <i class="fas fa-clock"></i>
+              <div>
+                <h4>Working Hours</h4>
+                <p>Monday – Saturday: 10:00 AM – 6:00 PM<br>Sunday: Closed</p>
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-share-alt"></i>
+              <div>
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                  <a href="#"><i class="fab fa-twitter"></i></a>
+                  <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                  <a href="#"><i class="fab fa-github"></i></a>
+                  <a href="#"><i class="fab fa-facebook-f"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -808,8 +890,8 @@
       link.addEventListener('click', () => mobileNav.style.display = 'none');
     });
 
-    // REPLAYABLE SCROLL ANIMATIONS
-    const animatedElements = document.querySelectorAll('.fade-up, .fade-left, .fade-right, .zoom-in');
+    // REPLAYABLE SCROLL ANIMATIONS (adds/removes 'visible' class on intersection)
+    const animatedElements = document.querySelectorAll('.fade-up, .fade-left, .fade-right, .zoom-in, .fade-in-hero, .fade-in-hero-right');
     const animationObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -821,7 +903,7 @@
     }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
     animatedElements.forEach(el => animationObserver.observe(el));
 
-    // Stats counter (once)
+    // Stats counter (runs only once when first visible)
     const counters = document.querySelectorAll('.stat-number');
     const statsObserver = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
@@ -850,7 +932,7 @@
     }, { threshold: 0.5 });
     counters.forEach(c => statsObserver.observe(c));
 
-    // Contact form validation (FIXED)
+    // Contact form validation
     const form = document.getElementById('contactForm');
     form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -859,7 +941,6 @@
       const message = document.getElementById('message').value.trim();
       let valid = true;
       
-      // Reset error messages
       document.getElementById('nameError').style.display = 'none';
       document.getElementById('emailError').style.display = 'none';
       document.getElementById('messageError').style.display = 'none';
@@ -882,8 +963,6 @@
         statusDiv.className = 'form-status';
         statusDiv.style.display = 'block';
         statusDiv.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Sending message...';
-        
-        // Simulate API call
         setTimeout(() => {
           statusDiv.className = 'form-status success';
           statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! We\'ll be in touch within 24 hours.';
